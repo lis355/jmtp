@@ -16,7 +16,7 @@ const server = createServer()
 			console.log("server: message from client with size", JSON.stringify(message).length, peer.id, peer.tcpSocket.remoteAddress, peer.tcpSocket.remotePort);
 			console.log(JSON.stringify(message));
 
-			peer.send({ res: peer.id });
+			peer.send({ res: peer.id, message });
 		});
 
 		peer.on("disconnect", () => {
