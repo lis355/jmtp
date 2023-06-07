@@ -1,0 +1,12 @@
+{
+	"name": "json-tcp-peer",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "Ivan Lartsov",
+	"homepage": "https://github.com/lis355/json-tcp-peer",
+	"license": "MIT",
+	"devDependencies": {
+		"eslint": "^8.42.0",
+		"eslint-config-protop": "^1.0.0"
+	}
+}
