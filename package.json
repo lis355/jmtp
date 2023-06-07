@@ -2,7 +2,7 @@
 	"name": "json-tcp-peer",
 	"version": "1.0.0",
 	"main": "index.js",
-	"author": "Ivan Lartsov",
+	"author": "Ivan Lartsov <lartsov@gmail.com>",
 	"homepage": "https://github.com/lis355/json-tcp-peer",
 	"license": "MIT",
 	"devDependencies": {
