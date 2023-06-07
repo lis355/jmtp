@@ -1,5 +1,8 @@
 const { createServer, createClient } = require("../index");
 
+process.on("uncaughtException", console.error);
+process.on("unhandledRejection", console.error);
+
 const port = 8000;
 
 const server = createServer()
