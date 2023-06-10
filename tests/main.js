@@ -5,22 +5,22 @@ process.on("unhandledRejection", console.error);
 
 const port = 8000;
 
-const server = createServer()
+const server = createServer({ port })
 	.on("listening", () => {
-		console.log("server: started on port", server.port);
+		console.log("server: started on port", server.options.port);
 	})
 	.on("connection", peer => {
-		console.log("server: client connected", peer.id, peer.tcpSocket.remoteAddress, peer.tcpSocket.remotePort);
+		console.log("server: client connected", peer.tcpSocket.remoteAddress, peer.tcpSocket.remotePort);
 
 		peer.on("message", message => {
-			console.log("server: message from client with size", JSON.stringify(message).length, peer.id, peer.tcpSocket.remoteAddress, peer.tcpSocket.remotePort);
+			console.log("server: message from client with size", JSON.stringify(message).length, peer.tcpSocket.remoteAddress, peer.tcpSocket.remotePort);
 			console.log(JSON.stringify(message));
 
-			peer.send({ res: peer.id, message });
+			peer.send({ res: "hi", message });
 		});
 
 		peer.on("disconnect", () => {
-			console.log("server: client disconnected", peer.id, peer.tcpSocket.remoteAddress, peer.tcpSocket.remotePort);
+			console.log("server: client disconnected", peer.tcpSocket.remoteAddress, peer.tcpSocket.remotePort);
 
 			server.close();
 		});
@@ -28,7 +28,7 @@ const server = createServer()
 	.on("close", () => {
 		console.log("server: closed");
 	})
-	.listen(port);
+	.listen();
 
 const client = createClient()
 	.on("connect", () => {

@@ -1,4 +1,11 @@
+const Client = require("./lib/client");
+const Server = require("./lib/server");
+
 module.exports = {
-	createClient: require("./lib/client"),
-	createServer: require("./lib/server")
+	createClient: function (options) {
+		return new Client(options);
+	},
+	createServer: function (options) {
+		return new Server(options);
+	}
 };
