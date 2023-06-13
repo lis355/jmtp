@@ -10,8 +10,21 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"name": "test",
-			"program": "${workspaceFolder}/tests/main.js",
+			"name": "tests/tcpClientServer",
+			"program": "${workspaceFolder}/tests/tcpClientServer.js",
+			"cwd": "${workspaceFolder}/tests/",
+			"args": [],
+			"env": {}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"name": "tests/tlsClientServer",
+			"program": "${workspaceFolder}/tests/tlsClientServer.js",
+			"cwd": "${workspaceFolder}/tests/",
 			"args": [],
 			"env": {}
 		}
