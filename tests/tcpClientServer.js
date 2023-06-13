@@ -41,6 +41,7 @@ const client = createClient({
 		console.log(`client: connected to server ${HOST}:${PORT}`);
 
 		client.send({ req: "hello" });
+		// client.send(new Array(64 * 1024).join("A"));
 
 		client.disconnect();
 	})
@@ -48,4 +49,4 @@ const client = createClient({
 		console.log("client: message from server with size", JSON.stringify(message).length);
 		console.log(JSON.stringify(message));
 	})
-	.connect(PORT, HOST)
+	.connect(PORT, HOST);
