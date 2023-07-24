@@ -1,5 +1,6 @@
 {
-	"name": "json-tcp-peer",
+	"name": "jmtp",
+	"description": "JSON messages transfer protocol",
 	"version": "1.0.0",
 	"main": "index.js",
 	"author": "Ivan Lartsov <lartsov@gmail.com>",

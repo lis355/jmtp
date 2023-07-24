@@ -1,3 +1,5 @@
+var crypto = require("crypto");
+
 require("dotenv-flow").config();
 
 const { createServer, createClient } = require("../index");
@@ -7,6 +9,10 @@ process.on("unhandledRejection", console.error);
 
 const PORT = parseFloat(process.env.PORT) || 8100;
 const HOST = process.env.HOST || "localhost";
+
+function md5(str) {
+	return crypto.createHash("md5").update(str || "").digest("hex");
+}
 
 const server = createServer({
 	port: PORT
@@ -19,9 +25,9 @@ const server = createServer({
 
 		peer.on("message", message => {
 			console.log("server: message from client with size", JSON.stringify(message).length, peer.socket.remoteAddress, peer.socket.remotePort);
-			console.log(JSON.stringify(message));
+			console.log(`server: message from client ${JSON.stringify(message)}`);
 
-			peer.send({ res: "hi", message });
+			peer.send({ hash: md5(JSON.stringify(message)) });
 		});
 
 		peer.on("disconnect", () => {
@@ -36,17 +42,22 @@ const server = createServer({
 	.listen();
 
 const client = createClient({
+	host: HOST,
+	port: PORT
 })
 	.on("connect", () => {
 		console.log(`client: connected to server ${HOST}:${PORT}`);
 
-		client.send({ req: "hello" });
-		// client.send(new Array(64 * 1024).join("A"));
+		client.data = { date: Date() };
+		// client.data = new Array(2 ** 16 * 3).join("A");
+		client.send(client.data);
 
 		client.disconnect();
 	})
 	.on("message", message => {
 		console.log("client: message from server with size", JSON.stringify(message).length);
-		console.log(JSON.stringify(message));
+		console.log(`client: message from server ${JSON.stringify(message)}`);
+
+		console.log(md5(JSON.stringify(client.data)) === message.hash ? "OK" : "ERROR");
 	})
-	.connect(PORT, HOST);
+	.connect();
