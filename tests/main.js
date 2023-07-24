@@ -6,7 +6,7 @@ require("dotenv-flow").config();
 const { program } = require("commander");
 
 program
-	.option("--tcp")
+	.option("--tls")
 	.parse();
 
 const options = program.opts();
