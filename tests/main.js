@@ -1,6 +1,15 @@
-var crypto = require("crypto");
+const crypto = require("crypto");
+const tls = require("tls");
+const fs = require("fs");
 
 require("dotenv-flow").config();
+const { program } = require("commander");
+
+program
+	.option("--tcp")
+	.parse();
+
+const options = program.opts();
 
 const { createServer, createClient } = require("../index");
 
@@ -14,9 +23,26 @@ function md5(str) {
 	return crypto.createHash("md5").update(str || "").digest("hex");
 }
 
-const server = createServer({
-	port: PORT
-})
+let serverOptions;
+if (options.tls) {
+	serverOptions = {
+		port: PORT,
+		createServer: () => {
+			const certificates = {
+				key: fs.readFileSync(process.env.SSL_PRIVATE_KEY_FILE_PATH),
+				cert: fs.readFileSync(process.env.SSL_FULL_CHAIN_PEM_FILE_PATH)
+			};
+
+			return tls.createServer(certificates);
+		}
+	};
+} else {
+	serverOptions = {
+		port: PORT
+	};
+}
+
+const server = createServer(serverOptions)
 	.on("listening", () => {
 		console.log("server: started on port", server.options.port);
 	})
@@ -41,23 +67,35 @@ const server = createServer({
 	})
 	.listen();
 
-const client = createClient({
-	host: HOST,
-	port: PORT
-})
+let clientOptions;
+if (options.tls) {
+	clientOptions = {
+		createSocket: () => tls.connect(PORT, HOST)
+	};
+} else {
+	clientOptions = {
+		host: HOST,
+		port: PORT
+	};
+}
+
+const client = createClient(clientOptions)
 	.on("connect", () => {
 		console.log(`client: connected to server ${HOST}:${PORT}`);
 
 		client.data = { date: Date() };
-		// client.data = new Array(2 ** 16 * 3).join("A");
 		client.send(client.data);
 
 		client.disconnect();
+	})
+	.on("disconnect", () => {
+		console.log(`client: disconnected from server ${HOST}:${PORT}`);
 	})
 	.on("message", message => {
 		console.log("client: message from server with size", JSON.stringify(message).length);
 		console.log(`client: message from server ${JSON.stringify(message)}`);
 
 		console.log(md5(JSON.stringify(client.data)) === message.hash ? "OK" : "ERROR");
-	})
-	.connect();
+	});
+
+if (!options.tls) client.connect();

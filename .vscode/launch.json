@@ -11,7 +11,7 @@
 				"<node_internals>/**"
 			],
 			"name": "tests/tcpClientServer",
-			"program": "${workspaceFolder}/tests/tcpClientServer.js",
+			"program": "${workspaceFolder}/tests/main.js",
 			"cwd": "${workspaceFolder}/tests/",
 			"args": [],
 			"env": {}
@@ -23,9 +23,11 @@
 				"<node_internals>/**"
 			],
 			"name": "tests/tlsClientServer",
-			"program": "${workspaceFolder}/tests/tlsClientServer.js",
+			"program": "${workspaceFolder}/tests/main.js",
 			"cwd": "${workspaceFolder}/tests/",
-			"args": [],
+			"args": [
+				"--tls"
+			],
 			"env": {}
 		}
 	]
