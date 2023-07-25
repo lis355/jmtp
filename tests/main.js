@@ -65,6 +65,9 @@ const server = createServer(serverOptions)
 	.on("close", () => {
 		console.log("server: closed");
 	})
+	.on("error", error => {
+		console.log(`server: error ${error}`);
+	})
 	.listen();
 
 let clientOptions;
@@ -90,6 +93,9 @@ const client = createClient(clientOptions)
 	})
 	.on("disconnect", () => {
 		console.log(`client: disconnected from server ${HOST}:${PORT}`);
+	})
+	.on("error", error => {
+		console.log(`client: error ${error}`);
 	})
 	.on("message", message => {
 		console.log("client: message from server with size", JSON.stringify(message).length);
