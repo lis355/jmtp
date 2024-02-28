@@ -1,11 +1,3 @@
-const Client = require("./lib/client");
-const Server = require("./lib/server");
+const POMTProtocol = require("./lib/POMTProtocol");
 
-module.exports = {
-	createClient: function (options) {
-		return new Client(options);
-	},
-	createServer: function (options) {
-		return new Server(options);
-	}
-};
+module.exports = POMTProtocol;
