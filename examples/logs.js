@@ -14,7 +14,7 @@ const server = net.createServer(socket => {
 
 	const protocol = new POMTProtocol(socket, message => {
 		console.log("server: message from client with size", JSON.stringify(message).length, socket.remoteAddress, socket.remotePort);
-		console.log(`server: message from client ${JSON.stringify(message)}`);
+		console.log("server: message from client", message);
 
 		protocol.sendMessage(md5(JSON.stringify(message)));
 
@@ -33,7 +33,7 @@ const client = net.connect(PORT, "localhost", () => {
 
 	const protocol = new POMTProtocol(client, message => {
 		console.log("client: message from server with size", JSON.stringify(message).length);
-		console.log(`client: message from server ${JSON.stringify(message)}`);
+		console.log("client: message from server", message);
 
 		console.log(md5(JSON.stringify(obj)) === message ? "OK" : "ERROR");
 
